@@ -3,7 +3,7 @@
         <br><br>
         <a  class="btn btn-dark" href="<?= site_url('/home')?>"><- Volver</a>
         <h1>Nuevo Producto</h1>
-        <form class="fgeneral" method="post" action="<?= site_url('Administracion/guardar/')?>">
+        <form class="fgeneral" method="post" action="<?= site_url('/administracion/guardar') ?>">
             <label>Nombre</label>
             <input type="text" name="nombre" required>
             <br><br>

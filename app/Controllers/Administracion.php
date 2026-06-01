@@ -1,65 +1,73 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controllers;
 
 use App\Models\Productos;
 
 class Administracion extends BaseController
 {
-	public function editar()
+	/** Muestra el formulario de edición de un producto. */
+	public function editProduct(int $id): string
+	{
+		$model   = new Productos();
+		$product = $model->getById($id);
+
+		return $this->renderLayout('administracion/editar', [
+			'title'   => 'Edición de producto',
+			'product' => $product,
+		]);
+	}
+
+	/** Procesa el formulario de edición y actualiza el producto. */
+	public function updateProduct(int $id): \CodeIgniter\HTTP\RedirectResponse
 	{
 		$model = new Productos();
-        $url=explode("/",$_SERVER["REQUEST_URI"]);
-		$data = array(
-			'title'     =>   'Edicion de productos',
-			'producto'	=>	 $model->read_product($url[3])[0]
-		);
 
-		echo view('@shell/html_top',$data);
-        echo view('administracion/editar',$data);
-		echo view('@shell/html_bottom');
+		$model->updateById($id, [
+			'nombre'           => $this->request->getVar('nombre'),
+			'sku'              => $this->request->getVar('sku'),
+			'categoria'        => $this->request->getVar('categoria'),
+			'precio'           => $this->request->getVar('precio'),
+			'descripcion'      => $this->request->getVar('descripcion'),
+			'codigo_de_barras' => $this->request->getVar('codigo'),
+		]);
+
+		return redirect()->to(site_url('/home'));
 	}
-    public function update()
-    {
-        $model = new Productos();
-        $url=explode("/",$_SERVER["REQUEST_URI"]);
-        $request = \Config\Services::request();
-        $datos=['nombre'          => $request->getVar('nombre'),
-                'sku'             => $request->getVar('sku'),
-                'categoria'       => $request->getVar('categoria'),
-                'precio'          => $request->getVar('precio'),
-                'descripcion'     => $request->getVar('descripcion'),
-                'codigo_de_barras'=> $request->getVar('codigo')];   
-        $model->update_product($url[4],$datos);
-        return redirect()->to(site_url('/home'));
-    }
-    public function nuevo()
-    {
-        $data = array(
-			'title'     =>   'Nuevo de producto'
-		);
 
-		echo view('@shell/html_top',$data);
-        echo view('administracion/nuevo');
-		echo view('@shell/html_bottom');
-    }
-    public function guardar()
-    {
-        $model = new Productos();
-        $request = \Config\Services::request();
-        $datos=['nombre'          => $request->getVar('nombre'),
-                'sku'             => $request->getVar('sku'),
-                'categoria'       => $request->getVar('categoria'),
-                'precio'          => $request->getVar('precio'),
-                'descripcion'     => $request->getVar('descripcion'),
-                'codigo_de_barras'=> $request->getVar('codigo')];   
-        $model->create_product($datos);
-        return redirect()->to(site_url('/home'));   
-    }
-    public function delete(){
-        $model = new Productos();
-        $url=explode("/",$_SERVER["REQUEST_URI"]); 
-        $model->delete_product($url[4]);
-        return redirect()->to(site_url('/home'));
-    }
+	/** Muestra el formulario para crear un nuevo producto. */
+	public function newProduct(): string
+	{
+		return $this->renderLayout('administracion/nuevo', [
+			'title' => 'Nuevo producto',
+		]);
+	}
+
+	/** Procesa el formulario de creación y guarda el producto. */
+	public function saveProduct(): \CodeIgniter\HTTP\RedirectResponse
+	{
+		$model = new Productos();
+
+		$model->create([
+			'nombre'           => $this->request->getVar('nombre'),
+			'sku'              => $this->request->getVar('sku'),
+			'categoria'        => $this->request->getVar('categoria'),
+			'precio'           => $this->request->getVar('precio'),
+			'descripcion'      => $this->request->getVar('descripcion'),
+			'codigo_de_barras' => $this->request->getVar('codigo'),
+		]);
+
+		return redirect()->to(site_url('/home'));
+	}
+
+	/** Desactiva lógicamente un producto. */
+	public function deleteProduct(int $id): \CodeIgniter\HTTP\RedirectResponse
+	{
+		$model = new Productos();
+		$model->softDelete($id);
+
+		return redirect()->to(site_url('/home'));
+	}
 }

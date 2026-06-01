@@ -1,9 +1,9 @@
 <div class="col-sm">
 <br><br>
-<a href="/administracion/nuevo" class="btn btn-primary" title="Agregar producto nuevo">+ Nuevo</a>
+<a href="<?= site_url('/administracion/nuevo') ?>" class="btn btn-primary" title="Agregar producto nuevo">+ Nuevo</a>
 <div class="col-sm">
 <br><br>
-    <?php if(!empty($productos) && is_array($productos)): ?>
+    <?php if (!empty($products) && is_array($products)): ?>
         <table class="table table-bordered">
             <thead class="thead-dark">
                 <tr>
@@ -17,24 +17,27 @@
                 </tr>
             </thead>
             <tbody>
-            <?php foreach($productos as $prodcuto):?>
+            <?php foreach ($products as $product): ?>
                 <tr>
-                    <td><?=$prodcuto['nombre']?></td>
-                    <td><?=$prodcuto['sku']?></td>
-                    <td><?=$prodcuto['categoria']?></td>
-                    <td><?=$prodcuto['precio']?></td>
-                    <td><?=$prodcuto['descripcion']?></td>
-                    <td><?=$prodcuto['codigo_de_barras']?></td>
-                    <td><a title="Editar producto" class="btn btn-primary" href="/administracion/editar/<?=$prodcuto['producto_id']?>">Editar</a></td>
+                    <td><?= $product['nombre'] ?></td>
+                    <td><?= $product['sku'] ?></td>
+                    <td><?= $product['categoria'] ?></td>
+                    <td><?= $product['precio'] ?></td>
+                    <td><?= $product['descripcion'] ?></td>
+                    <td><?= $product['codigo_de_barras'] ?></td>
+                    <td>
+                        <a title="Editar producto" class="btn btn-primary"
+                           href="<?= site_url('/administracion/editar/' . $product['producto_id']) ?>">
+                            Editar
+                        </a>
+                    </td>
                 </tr>
-            <?php endforeach;?>
+            <?php endforeach; ?>
             </tbody>
         </table>
-        <?php else : ?>
+    <?php else: ?>
         <div class="p-5 mtb-3 ta-center">
-                <p>
-                        No hay registros. <br/>
-                </p>
+            <p>No hay registros.</p>
         </div>
     <?php endif ?>
 </div>
