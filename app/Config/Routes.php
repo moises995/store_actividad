@@ -17,16 +17,21 @@ $routes->setTranslateURIDashes(false);
 $routes->set404Override();
 $routes->setAutoRoute(false);
 
-// Home
-$routes->get('/', 'Home::index');
-$routes->get('/home', 'Home::index');
+// Dashboard
+$routes->get('/',         'Home::index');
+$routes->get('/home',     'Home::index');
 
-// Administración de productos
-$routes->get('/administracion/nuevo',             'Administracion::newProduct');
-$routes->post('/administracion/guardar',          'Administracion::saveProduct');
-$routes->get('/administracion/editar/(:num)',     'Administracion::editProduct/$1');
-$routes->post('/administracion/update/(:num)',    'Administracion::updateProduct/$1');
-$routes->get('/administracion/delete/(:num)',     'Administracion::deleteProduct/$1');
+// Products list, export and barcode
+$routes->get('/products',              'Products::index');
+$routes->get('/products/export',       'Products::exportCsv');
+$routes->get('/products/barcode/(:num)', 'Products::barcode/$1');
+
+// Product CRUD
+$routes->get('/administracion/nuevo',            'Administracion::newProduct');
+$routes->post('/administracion/guardar',         'Administracion::saveProduct');
+$routes->get('/administracion/editar/(:num)',    'Administracion::editProduct/$1');
+$routes->post('/administracion/update/(:num)',   'Administracion::updateProduct/$1');
+$routes->get('/administracion/delete/(:num)',    'Administracion::deleteProduct/$1');
 
 if (file_exists(APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php')) {
 	require APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php';
