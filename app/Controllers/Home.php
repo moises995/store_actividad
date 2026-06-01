@@ -10,11 +10,9 @@ class Home extends BaseController
 {
 	public function index(): string
 	{
-		$model = new Productos();
-
 		return $this->renderLayout('home', [
-			'title'    => 'Menu Principal',
-			'products' => $model->getAll(),
+			'title'    => 'Products',
+			'products' => (new Productos())->getAll(),
 		]);
 	}
 }

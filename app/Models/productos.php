@@ -9,8 +9,9 @@ use CodeIgniter\Model;
 /**
  * Productos
  *
- * Gestiona la tabla `productos`. El borrado es lógico:
- * activo = NULL → activo; activo = 1 → desactivado.
+ * Manages the `productos` table. Deletion is logical:
+ *   activo = NULL  → active product
+ *   activo = 1     → deactivated product
  */
 class Productos extends Model
 {
@@ -23,33 +24,55 @@ class Productos extends Model
 		'descripcion', 'codigo_de_barras', 'activo',
 	];
 
-	/** Devuelve todos los productos activos. */
+	protected $validationRules = [
+		'nombre'           => 'required|max_length[255]',
+		'sku'              => 'required|max_length[25]',
+		'categoria'        => 'required|max_length[50]',
+		'precio'           => 'required|numeric|greater_than[0]',
+		'descripcion'      => 'required|max_length[255]',
+		'codigo_de_barras' => 'required|max_length[255]',
+	];
+
+	protected $validationMessages = [
+		'nombre'           => ['required' => 'Product name is required.'],
+		'sku'              => ['required' => 'SKU is required.'],
+		'categoria'        => ['required' => 'Category is required.'],
+		'precio'           => [
+			'required'     => 'Price is required.',
+			'numeric'      => 'Price must be a number.',
+			'greater_than' => 'Price must be greater than zero.',
+		],
+		'descripcion'      => ['required' => 'Description is required.'],
+		'codigo_de_barras' => ['required' => 'Barcode is required.'],
+	];
+
+	/** Returns all active products. */
 	public function getAll(): array
 	{
 		return $this->whereNull('activo')->findAll();
 	}
 
-	/** Devuelve un producto activo por ID. */
+	/** Returns a single active product by ID, or null if not found. */
 	public function getById(int $id): ?array
 	{
 		$result = $this->whereNull('activo')->where('producto_id', $id)->findAll();
 		return $result[0] ?? null;
 	}
 
-	/** Crea un nuevo producto. */
+	/** Inserts a new product and returns its ID. */
 	public function create(array $data): int
 	{
 		$this->insert($data);
 		return $this->insertID();
 	}
 
-	/** Actualiza los campos de un producto por ID. */
+	/** Updates the given fields of a product by ID. */
 	public function updateById(int $id, array $data): void
 	{
 		$this->set($data)->where('producto_id', $id)->update();
 	}
 
-	/** Borrado lógico: marca el producto como inactivo (activo = 1). */
+	/** Soft-deletes a product by setting activo = 1. */
 	public function softDelete(int $id): void
 	{
 		$this->set('activo', 1)->where('producto_id', $id)->update();
