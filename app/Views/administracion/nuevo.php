@@ -12,6 +12,7 @@
             </div>
             <div class="card-body p-4">
                 <form method="post" action="<?= site_url('/administracion/guardar') ?>" novalidate>
+                    <input type="hidden" name="<?= csrf_token() ?>" value="<?= csrf_hash() ?>">
 
                     <div class="mb-3">
                         <label for="nombre" class="form-label fw-medium">Name <span class="text-danger">*</span></label>

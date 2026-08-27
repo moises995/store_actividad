@@ -24,6 +24,7 @@
                 <form method="post"
                       action="<?= site_url('/administracion/update/' . $product['producto_id']) ?>"
                       novalidate>
+                    <input type="hidden" name="<?= csrf_token() ?>" value="<?= csrf_hash() ?>">
 
                     <div class="mb-3">
                         <label for="nombre" class="form-label fw-medium">Name <span class="text-danger">*</span></label>
@@ -97,11 +98,14 @@
                     <p class="mb-0 fw-medium text-danger">Danger zone</p>
                     <p class="mb-0 text-muted small">Deactivates this product. It will no longer appear in the list.</p>
                 </div>
-                <a href="<?= site_url('/administracion/delete/' . $product['producto_id']) ?>"
-                   class="btn btn-outline-danger btn-sm"
-                   onclick="return confirm('Delete <?= esc($product['nombre'], 'js') ?>? This cannot be undone.')">
-                    <i class="bi bi-trash me-1"></i>Delete
-                </a>
+                <form method="post"
+                      action="<?= site_url('/administracion/delete/' . $product['producto_id']) ?>"
+                      onsubmit="return confirm('Delete <?= esc($product['nombre'], 'js') ?>? This cannot be undone.')">
+                    <input type="hidden" name="<?= csrf_token() ?>" value="<?= csrf_hash() ?>">
+                    <button type="submit" class="btn btn-outline-danger btn-sm">
+                        <i class="bi bi-trash me-1"></i>Delete
+                    </button>
+                </form>
             </div>
         </div>
 

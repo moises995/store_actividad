@@ -31,7 +31,7 @@ $routes->get('/administracion/nuevo',            'Administracion::newProduct');
 $routes->post('/administracion/guardar',         'Administracion::saveProduct');
 $routes->get('/administracion/editar/(:num)',    'Administracion::editProduct/$1');
 $routes->post('/administracion/update/(:num)',   'Administracion::updateProduct/$1');
-$routes->get('/administracion/delete/(:num)',    'Administracion::deleteProduct/$1');
+$routes->post('/administracion/delete/(:num)',   'Administracion::deleteProduct/$1');
 
 if (file_exists(APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php')) {
 	require APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php';
