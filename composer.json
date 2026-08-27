@@ -4,8 +4,8 @@
 	"description": "Sistema de gestión de inventario de productos con CodeIgniter 4",
 	"license": "MIT",
 	"require": {
-		"php": ">=8.1",
-		"codeigniter4/framework": "^4.4",
+		"php": ">=8.2",
+		"codeigniter4/framework": "^4.7.4",
 		"picqer/php-barcode-generator": "^2.0"
 	},
 	"require-dev": {
